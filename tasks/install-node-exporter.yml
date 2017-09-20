@@ -119,3 +119,10 @@
 - name: set INIT status and start
   service: name=node_exporter enabled=yes state=started
   when: "{{ not initscriptcopy.skipped|default(False) or not unitfilecopy.skipped|default(False) }}"
+
+- name: restart node_exporter service if unit file changed
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: node_exporter
+  when: prometheus_node_exporter_use_systemd|bool and unitfilecopy.changed
