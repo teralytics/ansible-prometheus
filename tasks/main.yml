@@ -30,6 +30,7 @@
     shell: "{{ prometheus_user_shell }}"
     comment: "Prometheus User"
     state: present
+    system: "{{prometheus_user_is_system_user|default(omit)}}"
 
 - name: mkdir for general cases
   file:
