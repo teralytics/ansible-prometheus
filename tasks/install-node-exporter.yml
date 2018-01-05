@@ -109,11 +109,13 @@
   template: src="../templates/node_exporter.sysvinit.{{ ansible_os_family|lower }}.sh.j2"  dest="/etc/init.d/node_exporter"  mode="a+x"
   when: not prometheus_node_exporter_use_systemd|bool
   register: initscriptcopy
+  notify: restart node_exporter
 
 - name: copy systemd config to server
   template: src="../templates/node_exporter.service.j2"  dest="/lib/systemd/system/node_exporter.service"
   when: prometheus_node_exporter_use_systemd|bool
   register: unitfilecopy
+  notify: restart node_exporter (systemd)
 
 
 - name: set INIT status and start
